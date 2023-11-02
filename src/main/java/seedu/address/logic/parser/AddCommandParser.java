@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_IS_PROF;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_NUMBER;
@@ -19,6 +20,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Professor;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.StudentNumber;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
@@ -46,7 +49,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                PREFIX_STUDENT_NUMBER, PREFIX_TELEGRAM);
+                PREFIX_STUDENT_NUMBER, PREFIX_TELEGRAM, PREFIX_IS_PROF);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
@@ -56,8 +59,13 @@ public class AddCommandParser implements Parser<AddCommand> {
         StudentNumber studentNumber = ParserUtil.parseStudentNumber(argMultimap.getValue(PREFIX_STUDENT_NUMBER).get());
         Telegram telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get());
 
-        Person person = new Person(name, phone, email, tagList, modules, tutorials, studentNumber, telegram);
-
+        boolean isProf = argMultimap.getValue(PREFIX_IS_PROF).isPresent();
+        Person person;
+        if (isProf) {
+            person = new Professor(name, phone, email, tagList, modules, tutorials, telegram);
+        } else {
+            person = new Student(name, phone, email, tagList, modules, tutorials, studentNumber, telegram);
+        }
         return new AddCommand(person);
     }
 

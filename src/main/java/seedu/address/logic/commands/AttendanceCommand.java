@@ -12,15 +12,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.module.Module;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.StudentNumber;
-import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tutorial.Tutorial;
 
 /**
  * Takes attendance from the person.
@@ -68,24 +61,12 @@ public class AttendanceCommand extends Command {
     private Person createEditedPerson(Person personToEdit) {
         assert personToEdit != null;
 
-        Name updatedName = personToEdit.getName();
-        Phone updatedPhone = personToEdit.getPhone();
-        Email updatedEmail = personToEdit.getEmail();
-
         Set<Tag> updatedTags = new HashSet<>();
         for (Tag tag : personToEdit.getTags()) {
             updatedTags.add(tag);
         }
         updatedTags.add(toAdd);
-
-        Set<Module> updatedModules = new HashSet<>(personToEdit.getModules());
-        Set<Tutorial> updatedTutorials = personToEdit.getTutorials();
-        StudentNumber updatedStudentNumber = personToEdit.getStudentNumber();
-        Telegram updatedTelegram = personToEdit.getTelegram();
-
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags, updatedModules,
-                updatedTutorials, updatedStudentNumber, updatedTelegram);
-
+        return personToEdit.changeTags(updatedTags);
     }
 
     @Override

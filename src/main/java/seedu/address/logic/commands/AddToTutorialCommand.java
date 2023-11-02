@@ -5,23 +5,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MODULE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL_NAME;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.module.Module;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.StudentNumber;
-import seedu.address.model.person.Telegram;
-import seedu.address.model.tag.Tag;
 import seedu.address.model.tutorial.Tutorial;
 
 /**
@@ -92,19 +83,7 @@ public class AddToTutorialCommand extends Command {
         assert personToEdit != null;
         assert realTutorial != null;
 
-        Name updatedName = personToEdit.getName();
-        Phone updatedPhone = personToEdit.getPhone();
-        Email updatedEmail = personToEdit.getEmail();
-        Set<Tag> updatedTags = personToEdit.getTags();
-        Set<Module> updatedModules = new HashSet<>(personToEdit.getModules());
-        updatedModules.add(new Module(tutorialToAddTo.getModuleCode()));
-        Set<Tutorial> updatedTutorials = new HashSet<>(personToEdit.getTutorials());
-        updatedTutorials.add(realTutorial);
-        StudentNumber updatedStudentNumber = personToEdit.getStudentNumber();
-        Telegram updatedTelegram = personToEdit.getTelegram();
-
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags, updatedModules,
-                updatedTutorials, updatedStudentNumber, updatedTelegram);
+        return personToEdit.addTutorial(realTutorial);
     }
 
     @Override

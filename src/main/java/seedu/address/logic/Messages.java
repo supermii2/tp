@@ -41,21 +41,7 @@ public class Messages {
      * Formats the {@code person} for display to the user.
      */
     public static String format(Person person) {
-        final StringBuilder builder = new StringBuilder();
-        builder.append(person.getName())
-                .append("; Phone: ")
-                .append(person.getPhone())
-                .append("; Email: ")
-                .append(person.getEmail())
-                .append("; Tags: ");
-        person.getTags().forEach(builder::append);
-        builder.append("; Modules: ");
-        person.getModules().forEach(builder::append);
-        builder.append("; Tutorials: ");
-        person.getTutorials().forEach(builder::append);
-        builder.append("; Student Number: ")
-               .append(person.getStudentNumber());
-        return builder.toString();
+        return person.format();
     }
 
     /**

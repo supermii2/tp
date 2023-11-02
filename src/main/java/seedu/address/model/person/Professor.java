@@ -14,7 +14,21 @@ public class Professor extends Person {
      * Every field must be present and not null.
      */
     public Professor(Name name, Phone phone, Email email, Set<Tag> tags,
-                     Set<Module> modules, Set<Tutorial> tutorials, StudentNumber studentNumber, Telegram telegram) {
-        super(name, phone, email, tags, modules, tutorials, new StudentNumber("N/A"), telegram);
+                     Set<Module> modules, Set<Tutorial> tutorials, Telegram telegram) {
+        super(name, phone, email, tags, modules, tutorials, telegram);
+    }
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof Professor)) {
+            return false;
+        }
+
+        Student otherPerson = (Student) other;
+        return super.equals(otherPerson);
     }
 }

@@ -15,6 +15,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Professor;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.StudentNumber;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
@@ -78,7 +80,11 @@ class JsonAdaptedPerson {
         tutorials.addAll(source.getTutorials().stream()
                 .map(JsonAdaptedTutorial::new)
                 .collect(Collectors.toList()));
-        studentNumber = source.getStudentNumber().value;
+        if (source instanceof Student) {
+            studentNumber = ((Student) source).getStudentNumber().value;
+        } else {
+            studentNumber = null;
+        }
         telegram = source.getTelegram().value;
     }
 
@@ -127,11 +133,12 @@ class JsonAdaptedPerson {
             personTutorials.add(tutorial.toModelType());
         }
 
+        final StudentNumber modelStudentNumber;
         if (studentNumber == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    StudentNumber.class.getSimpleName()));
+            modelStudentNumber = null;
+        } else {
+            modelStudentNumber = new StudentNumber(studentNumber);
         }
-        final StudentNumber modelStudentNumber = new StudentNumber(studentNumber);
 
         if (telegram == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
@@ -142,7 +149,13 @@ class JsonAdaptedPerson {
         final Set<Tag> modelTags = new HashSet<>(personTags);
         final Set<Module> modelModules = new HashSet<>(personModules);
         final Set<Tutorial> modelTutorials = new HashSet<>(personTutorials);
-        return new Person(modelName, modelPhone, modelEmail, modelTags,
-                modelModules, modelTutorials, modelStudentNumber, modelTelegram);
+
+        if (modelStudentNumber == null) {
+            return new Professor(modelName, modelPhone, modelEmail, modelTags,
+                    modelModules, modelTutorials, modelTelegram);
+        } else {
+            return new Student(modelName, modelPhone, modelEmail, modelTags,
+                    modelModules, modelTutorials, modelStudentNumber, modelTelegram);
+        }
     }
 }

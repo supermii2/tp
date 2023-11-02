@@ -5,23 +5,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MODULE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL_NAME;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.module.Module;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.StudentNumber;
-import seedu.address.model.person.Telegram;
-import seedu.address.model.tag.Tag;
 import seedu.address.model.tutorial.Tutorial;
 
 /**
@@ -94,19 +85,7 @@ public class RemoveFromTutorialCommand extends Command {
     private Person createEditedPerson(Person personToEdit, Tutorial realTutorial) {
         assert personToEdit != null;
         assert realTutorial != null;
-
-        Name updatedName = personToEdit.getName();
-        Phone updatedPhone = personToEdit.getPhone();
-        Email updatedEmail = personToEdit.getEmail();
-        Set<Tag> updatedTags = personToEdit.getTags();
-        Set<Module> updatedModules = personToEdit.getModules();
-        Set<Tutorial> updatedTutorials = new HashSet<>(personToEdit.getTutorials());
-        updatedTutorials.remove(realTutorial);
-        StudentNumber updatedStudentNumber = personToEdit.getStudentNumber();
-        Telegram updatedTelegram = personToEdit.getTelegram();
-
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags,
-                updatedModules, updatedTutorials, updatedStudentNumber, updatedTelegram);
+        return personToEdit.removeTutorial(realTutorial);
     }
 
     /**

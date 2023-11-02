@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.EditCommand;
 import seedu.address.model.module.Module;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tutorial.Tutorial;
@@ -19,32 +20,30 @@ import seedu.address.model.tutorial.Tutorial;
  */
 public class Person {
     // Identity fields
-    private final Name name;
-    private final Phone phone;
-    private final Email email;
+    protected final Name name;
+    protected final Phone phone;
+    protected final Email email;
 
     // Data fields
-    private final Set<Tag> tags = new HashSet<>();
-    private final Set<Module> modules = new HashSet<>();
-    private final Set<Tutorial> tutorials = new HashSet<>();
-    private final StudentNumber studentNumber;
+    protected final Set<Tag> tags = new HashSet<>();
+    protected final Set<Module> modules = new HashSet<>();
+    protected final Set<Tutorial> tutorials = new HashSet<>();
 
-    private final Telegram telegram;
+    protected final Telegram telegram;
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Set<Tag> tags,
-                  Set<Module> modules, Set<Tutorial> tutorials, StudentNumber studentNumber,
+                  Set<Module> modules, Set<Tutorial> tutorials,
                   Telegram telegram) {
-        requireAllNonNull(name, phone, email, tags, studentNumber);
+        requireAllNonNull(name, phone, email, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.tags.addAll(tags);
         this.modules.addAll(modules);
         this.tutorials.addAll(tutorials);
-        this.studentNumber = studentNumber;
         this.telegram = telegram;
     }
 
@@ -101,14 +100,75 @@ public class Person {
         return uiList;
     }
 
-    public StudentNumber getStudentNumber() {
-        return studentNumber;
-    }
-
     public Telegram getTelegram() {
         return telegram;
     }
 
+    public Person changeTags(Set<Tag> updatedTags) {
+        return new Person(name, phone, email, updatedTags, modules, tutorials, telegram);
+    }
+
+    /**
+     * Creates a new Person with the given  {@code EditPersonDescriptor}
+     * and returns it
+     */
+    public Person editPerson(EditCommand.EditPersonDescriptor editPersonDescriptor) {
+        Name updatedName = editPersonDescriptor.getName().orElse(this.getName());
+        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(this.getPhone());
+        Email updatedEmail = editPersonDescriptor.getEmail().orElse(this.getEmail());
+        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(this.getTags());
+        Set<Module> updatedModules = this.getModules();
+        Set<Tutorial> updatedTutorials = this.getTutorials();
+        Telegram updatedTelegram = editPersonDescriptor.getTelegram().orElse(this.getTelegram());
+
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags, updatedModules,
+        updatedTutorials, updatedTelegram);
+    }
+
+    /**
+     * Creates a new Person, adds the given {@code Module}
+     * and returns it
+     */
+    public Person addModule(Module moduleToAddTo) {
+        Set<Module> updatedModules = new HashSet<>(this.getModules());
+        updatedModules.add(moduleToAddTo);
+        return new Person(name, phone, email, tags, updatedModules, tutorials, telegram);
+    }
+
+    /**
+     * Creates a new Person, adds the given {@code Tutorial}
+     * and returns it
+     */
+    public Person addTutorial(Tutorial tutorialToAddTo) {
+        Set<Module> updatedModules = new HashSet<>(this.getModules());
+        updatedModules.add(new Module(tutorialToAddTo.getModuleCode()));
+        Set<Tutorial> updatedTutorials = new HashSet<>(this.getTutorials());
+        updatedTutorials.add(tutorialToAddTo);
+        return new Person(name, phone, email, tags, updatedModules, updatedTutorials, telegram);
+    }
+
+    /**
+     * Creates a new Person, removes the given {@code Module}
+     * and returns it
+     */
+    public Person removeModule(Module moduleToRemoveFrom) {
+        Set<Module> updatedModules = new HashSet<>(this.getModules());
+        updatedModules.remove(moduleToRemoveFrom);
+        Set<Tutorial> updatedTutorials = new HashSet<>(this.getTutorials());
+        updatedTutorials.removeIf(tutorial -> Objects.equals(tutorial.getModuleCode(),
+                moduleToRemoveFrom.getModuleCode()));
+        return new Person(name, phone, email, tags, updatedModules, updatedTutorials, telegram);
+    }
+
+    /**
+     * Creates a new Person, removes the given {@code Tutorial}
+     * and returns it
+     */
+    public Person removeTutorial(Tutorial tutorialToRemoveFrom) {
+        Set<Tutorial> updatedTutorials = new HashSet<>(this.getTutorials());
+        updatedTutorials.remove(tutorialToRemoveFrom);
+        return new Person(name, phone, email, tags, modules, updatedTutorials, telegram);
+    }
 
     /**
      * Returns true if both persons have the same name.
@@ -122,6 +182,26 @@ public class Person {
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
     }
+
+    /**
+     * Formats the Person
+     */
+    public String format() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(this.getName())
+                .append("; Phone: ")
+                .append(this.getPhone())
+                .append("; Email: ")
+                .append(this.getEmail())
+                .append("; Tags: ");
+        this.getTags().forEach(builder::append);
+        builder.append("; Modules: ");
+        this.getModules().forEach(builder::append);
+        builder.append("; Tutorials: ");
+        this.getTutorials().forEach(builder::append);
+        return builder.toString();
+    }
+
 
     /**
      * Returns true if both persons have the same identity and data fields.
@@ -145,14 +225,13 @@ public class Person {
                 && tags.equals(otherPerson.tags)
                 && modules.equals(otherPerson.modules)
                 && tutorials.equals(otherPerson.tutorials)
-                && studentNumber.equals(otherPerson.studentNumber)
                 && telegram.equals(otherPerson.telegram);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, tags, modules, tutorials, studentNumber, telegram);
+        return Objects.hash(name, phone, email, tags, modules, tutorials, telegram);
     }
 
     @Override
@@ -164,7 +243,6 @@ public class Person {
                 .add("tags", tags)
                 .add("modules", modules)
                 .add("tutorials", tutorials)
-                .add("studentNumber", studentNumber)
                 .add("telegram", telegram)
                 .toString();
     }

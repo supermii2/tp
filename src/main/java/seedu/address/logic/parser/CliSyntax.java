@@ -19,6 +19,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_TUTORIAL_NAME = new Prefix("tn/");
     public static final Prefix PREFIX_TUTORIAL_TIME = new Prefix("tt/");
 
+    // "Flag Prof"
+    public static final Prefix PREFIX_IS_PROF = new Prefix("fp/");
     public static final Prefix PREFIX_ASSIGNMENT = new Prefix("assgn/");
 
 
