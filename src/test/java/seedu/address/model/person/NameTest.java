@@ -57,4 +57,12 @@ public class NameTest {
         // different values -> returns false
         assertFalse(name.equals(new Name("Other Valid Name")));
     }
+
+    @Test
+    public void contains() {
+        Name name = new Name("Valid name");
+        Name containedName = new Name("lid na");
+
+        assertTrue(name.contains(containedName));
+    }
 }

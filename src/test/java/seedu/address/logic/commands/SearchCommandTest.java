@@ -57,11 +57,23 @@ public class SearchCommandTest {
         List<Module> moduleList = new ArrayList<>();
         List<Tutorial> tutorialList = new ArrayList<>();
         List<Tag> tagList = new ArrayList<>();
-        expectedModel.updateFilteredPersonList(person -> person.getName().equals(nameToSearch));
+        expectedModel.updateFilteredPersonList(person -> person.getName().contains(nameToSearch));
         assertCommandSuccess(new SearchCommand(nameList, moduleList, tutorialList, tagList), model,
                 SearchCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
+    @Test
+    public void execute_searchByNameContained() {
+        Name nameToSearch = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getName();
+        Name nameToSearchContained = new Name(nameToSearch.fullName.substring(0, 4));
+        List<Name> nameList = new ArrayList<>(Collections.singletonList(nameToSearchContained));
+        List<Module> moduleList = new ArrayList<>();
+        List<Tutorial> tutorialList = new ArrayList<>();
+        List<Tag> tagList = new ArrayList<>();
+        expectedModel.updateFilteredPersonList(person -> person.getName().contains(nameToSearchContained));
+        assertCommandSuccess(new SearchCommand(nameList, moduleList, tutorialList, tagList), model,
+                SearchCommand.MESSAGE_SUCCESS, expectedModel);
+    }
     @Test
     public void execute_searchByModule() {
         List<Name> nameList = new ArrayList<>();

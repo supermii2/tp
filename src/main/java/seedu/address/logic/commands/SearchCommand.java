@@ -57,7 +57,7 @@ public class SearchCommand extends Command {
         }
 
         return (person -> personNameToSearch.stream()
-                .allMatch(name -> person.getName().equals(name))
+                .allMatch(name -> person.getName().contains(name))
                 && person.getModules().containsAll(modulesToSearch)
                 && person.getTutorials().containsAll(tutorialsToSearch)
                 && person.getTags().containsAll(tagsToSearch));
