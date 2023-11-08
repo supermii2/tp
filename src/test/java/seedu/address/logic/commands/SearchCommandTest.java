@@ -108,7 +108,6 @@ public class SearchCommandTest {
 
     }
 
-
     @Test
     public void equals() {
         List<Name> amyNameList = new ArrayList<>(List.of(new Name(VALID_NAME_AMY)));

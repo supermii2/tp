@@ -39,7 +39,7 @@ public class Name {
     }
 
     public boolean contains(Name name) {
-        return (this.fullName.contains(name.fullName));
+        return (this.fullName.toLowerCase().contains(name.fullName.toLowerCase()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Name {
         }
 
         Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+        return fullName.toLowerCase().equals(otherName.fullName.toLowerCase());
     }
 
     @Override
