@@ -48,7 +48,7 @@ public class SearchCommand extends Command {
         tagsToSearch = tags;
     }
 
-    private Predicate<Person> getPersonPredicateFromModule() {
+    private Predicate<Person> getPersonPredicateFromModule(Model model) {
         if (personNameToSearch.isEmpty()
                 && modulesToSearch.isEmpty()
                 && tutorialsToSearch.isEmpty()
@@ -84,7 +84,7 @@ public class SearchCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredPersonList(getPersonPredicateFromModule());
+        model.updateFilteredPersonList(getPersonPredicateFromModule(model));
         return new CommandResult(MESSAGE_SUCCESS);
     }
     @Override
