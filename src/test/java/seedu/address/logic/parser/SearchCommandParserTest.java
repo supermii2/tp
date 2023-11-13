@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.CommandTestUtil.ATTN_LESSON_ONE;
 import static seedu.address.logic.commands.CommandTestUtil.MODULE_DESC_CS2100;
 import static seedu.address.logic.commands.CommandTestUtil.MODULE_DESC_CS2101;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
@@ -10,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.TUTORIAL_GROUP_DESC_T
 import static seedu.address.logic.commands.CommandTestUtil.VALID_MODULE_CS2100;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TUTORIAL_GROUP_TG01;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -67,9 +67,11 @@ public class SearchCommandParserTest {
         List<Module> expectedModuleList = new ArrayList<>();
         List<Tutorial> expectedTutorialList = new ArrayList<>();
 
+        String testInput = " " + PREFIX_TAG + "S2";
+
         Tag testTag = new Tag("S2");
         List<Tag> expectedTagList = new ArrayList<>(List.of(testTag));
-        assertParseSuccess(parser, ATTN_LESSON_ONE,
+        assertParseSuccess(parser, testInput,
                 new SearchCommand(expectedNameList, expectedModuleList, expectedTutorialList, expectedTagList));
     }
 

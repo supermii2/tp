@@ -199,7 +199,7 @@ Lists out all persons with the given condition.
 Format: `search CONDITION1, CONDITION2, …`
 
 * Condition is given in the format keyword: value.
-* Accepted condition keywords are module, tutorial name and person name.
+* Accepted condition keywords are module, tutorial name, person name and tags.
 * Keywords are case-sensitive, only NAME is case-insensitive.
 * Unrecognised keywords cause this method to fail.
 * Searching with no conditions will return no users.
@@ -209,8 +209,9 @@ Format: `search CONDITION1, CONDITION2, …`
 
 Examples:
 * `search m/CS2103T` returns all persons in the module CS2103T
-* `search tn/T03` returns all persons in the class T03
+* `search m/CS2103T tn/T03` returns all persons in the tutorial T03 in the module CS2103T
 * `search n/John Doe` returns all persons with the name John Doe
+* `search t/student` returns all persons with the tag student
 
 ### Clearing all entries : `clear`
 
@@ -432,7 +433,7 @@ Example: `addAssignment assgn/Assignment 1`
 ## Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, OS-X
-* **Teaching Assistant (TA)**: A non-professor tutor which helps the professors of a module by teaching one or more classes.
+* **Teaching Assistant (TA)**: A non-professor tutor which helps the professors of a module by teaching one or more tutorials.
 * **Module**: A unit of study in a specific field set by NUS, such as CS2103T focusing on Software Engineering.
 * **Tutorial**: Lessons that are part of a module. Includes not only tutorials,
 but also laboratories, recitations and any form of lesson that includes a TA.

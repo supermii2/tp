@@ -1,9 +1,9 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ATTENDANCE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODULE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL_NAME;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class SearchCommandParser implements Parser<SearchCommand> {
      */
     public SearchCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_MODULE, PREFIX_TUTORIAL_NAME, PREFIX_ATTENDANCE);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_MODULE, PREFIX_TUTORIAL_NAME, PREFIX_TAG);
         if (!argMultimap.getPreamble().isEmpty() || argMultimap.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
         }
@@ -54,9 +54,9 @@ public class SearchCommandParser implements Parser<SearchCommand> {
                 .stream()
                 .map(nameString -> new Tutorial(moduleList.get(0), nameString))
                 .collect(Collectors.toList());
-        final List<Tag> tagList = argMultimap.getAllValues(PREFIX_ATTENDANCE)
+        final List<Tag> tagList = argMultimap.getAllValues(PREFIX_TAG)
                 .stream()
-                .map(lessonNumber -> new Tag(lessonNumber))
+                .map(tagName -> new Tag(tagName))
                 .collect(Collectors.toList());
 
         return new SearchCommand(personNameList, moduleList, tutorialList, tagList);
